@@ -16,6 +16,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  var _start = false;
   var _questionIndex = 0;
   final _questions = const [
     {
@@ -53,6 +54,7 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       _questionIndex = 0;
       _totalScore = 0;
+      _start = false;
     });
   }
 
@@ -76,12 +78,23 @@ class _MyAppState extends State<MyApp> {
           appBar: AppBar(
             title: Text('My First App'),
           ),
-          body: _questionIndex < _questions.length
-              ? Quiz(
-                  questions: _questions,
-                  answerQuestion: _answerQuestion,
-                  questionIndex: _questionIndex)
-              : Result(resultScore: _totalScore, reset: _resetQuiz)),
+          body: _start
+              ? _questionIndex < _questions.length
+                  ? Quiz(
+                      questions: _questions,
+                      answerQuestion: _answerQuestion,
+                      questionIndex: _questionIndex)
+                  : Result(resultScore: _totalScore, reset: _resetQuiz)
+              : Center(
+                  child: RaisedButton(
+                      child: Text('Start Quiz'),
+                      color: Colors.blue,
+                      textColor: Colors.white,
+                      onPressed: () {
+                        setState(() {
+                          _start = true;
+                        });
+                      }))),
     );
   }
 }
